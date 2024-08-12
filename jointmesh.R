@@ -1,10 +1,10 @@
-library(Rvcg)
-library(dplyr)
-
-read_ply = function(file_path){
+read_ply = function(file_path, filename = "0.ply"){
   ply_data = vcgPlyRead(file_path)
   data = as.data.frame(t(ply_data$vb[1:3,]))
   names(data) = c("x", "y", "z")
+  filename = basename(gsub(pattern = ".ply", replacement = "", filename))
+  data = list(filename = filename,
+              data = data)
   return(data)
 }
 
@@ -48,6 +48,8 @@ align = function(data, normalize = TRUE){
 }
 
 fit_data = function(data){
+  filename = data$filename
+  data = data$data
   data = align(data, normalize = TRUE)
   
   model = lm(data = data, 
@@ -63,15 +65,17 @@ fit_data = function(data){
   coef_matrix = data.frame(
     coef_name = c("intercept", 
                   "x1", "x2", "x3", "x4",
-                  "z1", "z2", "z3", "z4",
-                  "xz", "sqrt_xnz", "sqrt_x2nz2"
+                  "y1", "y2", "y3", "y4",
+                  "xy", "sqrt_xny", "sqrt_x2ny2"
     ),
     coef = model_summary$coefficients[,1],
-    se = model_summary$coefficients[,2]
+    se = model_summary$coefficients[,2],
+    p_value = model_summary$coefficients[,4]
   )
   rownames(coef_matrix) = NULL
   
   return(list(
+    filename = filename,
     coefficients = coef_matrix,
     rsq = r2,
     fitted_data = data
@@ -79,5 +83,60 @@ fit_data = function(data){
   
 }
 
-data = read_ply("data/TN/TNNavicularBoneSurfaces/L230959LTNNavicularBone.ply")
-fit_data(data)
+fit_data_batch = function(file_dir){
+  files = list.files(path = file_dir, pattern = ".ply")
+  filenames = gsub(pattern = ".ply", replacement = "", files)
+  files = as.list(file.path(file_dir, files))
+  
+  fitted_data_batch = map(files, function(x){
+    data = read_ply(x)
+    fitted_model = fit_data(data)
+    coefs = as.data.frame(t(c(fitted_model$rsq, fitted_model$coefficients$coef)))
+    names(coefs) = c("rsq", fitted_model$coefficients$coef_name)
+    return(coefs)
+  }) %>%
+    reduce(rbind.data.frame)
+  
+  fitted_data_batch = fitted_data_batch %>%
+    mutate(filename = filenames) %>%
+    select(filename, everything())
+  
+  return(fitted_data_batch)
+}
+
+visualize_data = function(fitted_model){
+  fitted_data = fitted_model$fitted_data
+  figure_title = paste(fitted_model$filename, "Fitted to JointMesh")
+  plt = plot_ly() %>%
+    add_trace(
+      x = fitted_data$x, 
+      y = fitted_data$y, 
+      z = fitted_data$z, 
+      type = "mesh3d", 
+      name = "Original Mesh",
+      opacity = 0.5,
+      color = I("blue"),
+      showlegend = TRUE
+    ) %>%
+    add_trace(
+      x = fitted_data$x, 
+      y = fitted_data$y, 
+      z = fitted_data$predicted_z, 
+      type = "mesh3d", 
+      name = "Fitted Mesh",
+      opacity = 0.5,
+      color = I("red"),
+      showlegend = TRUE
+    ) %>%
+    layout(
+      title = figure_title,
+      scene = list(
+        xaxis = list(title = "X"),
+        yaxis = list(title = "Y"),
+        zaxis = list(title = "Z")
+      ),
+      legend = list(title = list(text = ''))
+    )
+  
+  return(plt)
+}
