@@ -79,5 +79,5 @@ fit_data = function(data){
   
 }
 
-data = read_ply("TN_joint_Example/TN Navicular Bone Surfaces/L231040R\ TN\ Navicular\ Bone.ply")
+data = read_ply("data/TN/TNNavicularBoneSurfaces/L230959LTNNavicularBone.ply")
 fit_data(data)
