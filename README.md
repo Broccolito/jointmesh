@@ -2,6 +2,10 @@
 
 **JointMesh** is an R Shiny application designed for visualizing and analyzing joint surfaces. The application allows users to upload 3D mesh files, perform various analyses, and visualize the results in an interactive web interface.
 
+## Deployment
+
+The JointMesh App is currently deployed [here](https://wag001.shinyapps.io/jointmesh/).
+
 ## Features
 
 - **3D Mesh Visualization**: Load and visualize 3D mesh files of joint structures.

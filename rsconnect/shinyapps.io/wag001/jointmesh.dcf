@@ -1,0 +1,12 @@
+name: jointmesh
+title: jointmesh
+username: wag001
+account: wag001
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12444099
+bundleId: 8975511
+url: https://wag001.shinyapps.io/jointmesh/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

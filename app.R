@@ -147,9 +147,6 @@ server = function(input, output, session){
     visualize_data(fitted_model())
   })
   
-  session$onSessionEnded(function(){
-    stopApp()
-  })
 }
 
 
