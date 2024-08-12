@@ -34,3 +34,5 @@ if(!require("DT")){
 }
 
 source("jointmesh.R")
+
+jointmesh_repo = "https://github.com/Broccolito/jointmesh"

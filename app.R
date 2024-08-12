@@ -7,14 +7,17 @@ ui = fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      
       tabsetPanel(
-        
         tabPanel("Fit Data", 
                  div(
                    br(),
                    fileInput(inputId = "ply_file", label = "Upload .ply File", accept = ".ply"),
-                   actionButton(inputId = "run_singular", label = "Run JointMesh")
+                   actionButton(inputId = "run_singular", label = "Run JointMesh"),
+                   br(), hr(),
+                   helpText(
+                     "For help, visit the ",
+                     a("JointMesh Repository", href = jointmesh_repo, target = "_blank")
+                   )
                  )
         ),
         tabPanel("Fit Batch", 
@@ -25,7 +28,12 @@ ui = fluidPage(
                                   icon = icon("folder-open")),
                    verbatimTextOutput(outputId = "selected_dir"),
                    br(),
-                   actionButton(inputId = "run_batch", label = "Run JointMesh")
+                   actionButton(inputId = "run_batch", label = "Run JointMesh"),
+                   br(), hr(),
+                   helpText(
+                     "For help, visit the ",
+                     a("JointMesh Repository", href = jointmesh_repo, target = "_blank")
+                   )
                  )
         )
       )

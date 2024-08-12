@@ -1,8 +1,4 @@
-library(Rvcg)
-library(dplyr)
-library(purrr)
-library(plotly)
-source("jointmesh.R")
+source("setup.R")
 
 data = read_ply("data/TN/TNNavicularBoneSurfaces/L230959LTNNavicularBone.ply")
 fitted_model = fit_data(data)
