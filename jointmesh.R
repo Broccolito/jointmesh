@@ -112,20 +112,44 @@ visualize_data = function(fitted_model){
       x = fitted_data$x, 
       y = fitted_data$y, 
       z = fitted_data$z, 
-      type = "mesh3d", 
+      type = "scatter3d", 
       name = "Original Mesh",
       opacity = 0.5,
-      color = I("blue"),
+      color = I("lightblue"),
+      mode = "markers",
+      marker = list(
+        size = 4,
+        symbol = "circle",
+        lighting = list(
+          ambient = 0.5,
+          diffuse = 0.5,
+          specular = 1,
+          roughness = 0.1,
+          fresnel = 0.2
+        )
+      ),
       showlegend = TRUE
     ) %>%
     add_trace(
       x = fitted_data$x, 
       y = fitted_data$y, 
       z = fitted_data$predicted_z, 
-      type = "mesh3d", 
+      type = "scatter3d", 
       name = "Fitted Mesh",
       opacity = 0.5,
-      color = I("red"),
+      color = I("coral"),
+      mode = "markers",
+      marker = list(
+        size = 4,
+        symbol = "circle",
+        lighting = list(
+          ambient = 0.5,
+          diffuse = 0.5,
+          specular = 1,
+          roughness = 0.1,
+          fresnel = 0.2
+        )
+      ),
       showlegend = TRUE
     ) %>%
     layout(

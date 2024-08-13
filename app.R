@@ -128,7 +128,7 @@ server = function(input, output, session){
       mutate(coef = round(coef, 3)) %>%
       mutate(se = round(se, 3)) %>%
       mutate(p_value = formatC(p_value, digits = 2, format = "e", flag = "#"))
-    names(data) = c("", "Coefficient", "SE", "P.Value")
+    names(data) = c("Coefficient Name", "Coefficient", "SE", "P.Value")
     datatable_formatted = datatable(data,
                                     options = list(pageLength = 15,
                                                    dom = "Bfrtip",
